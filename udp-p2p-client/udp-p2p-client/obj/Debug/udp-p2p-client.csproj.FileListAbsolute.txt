@@ -1,0 +1,14 @@
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\bin\Debug\udp-p2p-client.exe.config
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\bin\Debug\udp-p2p-client.exe
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\bin\Debug\udp-p2p-client.pdb
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.csproj.AssemblyReference.cache
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.csproj.SuggestedBindingRedirects.cache
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp_p2p_client.Client.resources
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp_p2p_client.Form1.resources
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp_p2p_client.Properties.Resources.resources
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.csproj.GenerateResource.cache
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.csproj.CoreCompileInputs.cache
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.exe
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.pdb
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp_p2p_client.Server.resources
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp_p2p_client.Selection.resources
