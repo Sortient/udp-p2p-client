@@ -31,7 +31,7 @@ namespace udp_p2p_client
             this.remotePort = remotePort;
             this.nickname= nickname;
             node = new Node();
-            node.go(this, port, remoteIP, remotePort, nickname);
+            node.go(this, port, localIP, remoteIP, remotePort, nickname);
         }
 
         private void btnSend_Click(object sender, EventArgs e)

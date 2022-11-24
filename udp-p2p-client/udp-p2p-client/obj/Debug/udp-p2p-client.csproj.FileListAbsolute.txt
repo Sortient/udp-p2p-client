@@ -12,3 +12,17 @@ C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp-
 C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp_p2p_client.NodeGUI.resources
 C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp_p2p_client.SplashScreen.resources
 C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp_p2p_client.LoginGUI.resources
+F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\bin\Debug\udp-p2p-client.exe.config
+F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\bin\Debug\udp-p2p-client.exe
+F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\bin\Debug\udp-p2p-client.pdb
+F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.csproj.AssemblyReference.cache
+F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.csproj.SuggestedBindingRedirects.cache
+F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\obj\Debug\udp_p2p_client.Form1.resources
+F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\obj\Debug\udp_p2p_client.LoginGUI.resources
+F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\obj\Debug\udp_p2p_client.NodeGUI.resources
+F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\obj\Debug\udp_p2p_client.Properties.Resources.resources
+F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\obj\Debug\udp_p2p_client.SplashScreen.resources
+F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.csproj.GenerateResource.cache
+F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.csproj.CoreCompileInputs.cache
+F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.exe
+F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.pdb

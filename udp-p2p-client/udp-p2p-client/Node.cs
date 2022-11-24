@@ -19,13 +19,15 @@ namespace udp_p2p_client
         public NodeGUI nodeGUI = null;
         public List<RemoteNode> nodes = new List<RemoteNode>();
         public string nickname;
+        public string localIP;
 
-        public void go(NodeGUI gui,int port, string remoteIP, int remotePort, string nickname)
+        public void go(NodeGUI gui,int port, string localIP, string remoteIP, int remotePort, string nickname)
         {
             this.port = port;
             this.client= new UdpClient(port);
             this.nodeGUI = gui;
             this.nickname = nickname;
+            this.localIP = localIP;
             nlistener = new NetworkListener(this);
             RemoteNode initialNode = new RemoteNode(remoteIP, remotePort);
             nodes.Add(initialNode);
@@ -76,7 +78,25 @@ namespace udp_p2p_client
                         string remoteIP = ipEndPoint.Address.ToString();
                         string port = ipEndPoint.Port.ToString();
                         string[] cmd = data.Split(' ');
-                        node.CheckIfNodeIsKnown(ipEndPoint.Address.ToString(), ipEndPoint.Port);
+                        if (cmd[0] == "/node_list")
+                        {
+                            string nodeList = cmd[1];
+                            if (nodeList != "")
+                            {
+                                /*
+                                 * WAS HERE!
+                                 */
+                                List<RemoteNode> nodesToAdd = new List<RemoteNode>();
+                            }
+                        }
+                        if (!node.IsNodeKnown(ipEndPoint.Address.ToString(), ipEndPoint.Port))
+                        {
+
+                            byte[] nodes = Encoding.ASCII.GetBytes("/node_list " + node.NodeList());
+                            node.AddToKnownNodes(ipEndPoint.Address.ToString(), ipEndPoint.Port);
+                            node.client.Send(nodes,nodes.Length, remoteIP, Convert.ToInt32(port));
+                        }
+                        
                         node.nodeGUI.AppendText(node.Receive(data, remoteIP, port));//txtOutput.Text += Environment.NewLine + node.Receive(data, remoteIP, port);
                         receive = new byte[65535];
                     }
@@ -116,18 +136,39 @@ namespace udp_p2p_client
             return output;
         }
 
-        public void CheckIfNodeIsKnown(string ip, int port)
+        public bool IsNodeKnown(string ip, int port)
         {
             foreach (RemoteNode rn in this.nodes.ToList())
             {
-                if (rn.ip != ip || rn.port != port)
+                if (rn.ip == ip && rn.port == port)
                 {
-                    RemoteNode nodeToAdd = new RemoteNode(ip, port);
-                    this.nodes.Add(nodeToAdd);
-                    this.nodeGUI.AddToKnownNodesList(nodeToAdd);
+                    return true;
+                    
                 }
             }
+            return false;
         }
+
+        public void AddToKnownNodes(string ip, int port)
+        {
+            RemoteNode nodeToAdd = new RemoteNode(ip, port);
+            this.nodes.Add(nodeToAdd);
+            this.nodeGUI.AddToKnownNodesList(nodeToAdd);
+        }
+
+        public string NodeList()
+        {
+            string list = "";
+            foreach (RemoteNode rn in this.nodes.ToList())
+            {
+                if (rn.ip != this.localIP && rn.port != this.port)
+                {
+                    list += rn.ip + ',' + rn.port + ';';
+                }
+            }
+            return list;
+        }
+
         public void Send(string msg)
         {
             try
@@ -155,6 +196,7 @@ namespace udp_p2p_client
                     
                     foreach (RemoteNode rn in this.nodes)
                     {
+                        this.nodeGUI.txtOutput.AppendText("You said: " + msg);
                         msg = nickname + " says: " + msg;
                         bytes = Encoding.ASCII.GetBytes(msg);
                         IPEndPoint ipAddress = new IPEndPoint(IPAddress.Parse(rn.ip), rn.port);
