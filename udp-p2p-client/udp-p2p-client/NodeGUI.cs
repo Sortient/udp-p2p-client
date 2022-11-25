@@ -70,5 +70,10 @@ namespace udp_p2p_client
         {
             System.Windows.Forms.Application.Exit();
         }
+
+        private void btnKill_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Application.Exit();
+        }
     }
 }

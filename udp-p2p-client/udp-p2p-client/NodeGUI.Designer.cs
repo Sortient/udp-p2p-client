@@ -32,6 +32,7 @@
             this.txtInput = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
             this.lstKnownNodes = new System.Windows.Forms.ListBox();
+            this.btnKill = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtOutput
@@ -72,12 +73,23 @@
             this.lstKnownNodes.Size = new System.Drawing.Size(272, 422);
             this.lstKnownNodes.TabIndex = 3;
             // 
+            // btnKill
+            // 
+            this.btnKill.Location = new System.Drawing.Point(460, 443);
+            this.btnKill.Name = "btnKill";
+            this.btnKill.Size = new System.Drawing.Size(272, 30);
+            this.btnKill.TabIndex = 2;
+            this.btnKill.Text = "DEBUG: KILL CLIENT";
+            this.btnKill.UseVisualStyleBackColor = true;
+            this.btnKill.Click += new System.EventHandler(this.btnKill_Click);
+            // 
             // NodeGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(744, 492);
             this.Controls.Add(this.lstKnownNodes);
+            this.Controls.Add(this.btnKill);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.txtInput);
             this.Controls.Add(this.txtOutput);
@@ -97,5 +109,6 @@
         public System.Windows.Forms.TextBox txtInput;
         public System.Windows.Forms.Button btnSend;
         public System.Windows.Forms.ListBox lstKnownNodes;
+        public System.Windows.Forms.Button btnKill;
     }
 }

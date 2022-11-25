@@ -78,23 +78,33 @@ namespace udp_p2p_client
                         string remoteIP = ipEndPoint.Address.ToString();
                         string port = ipEndPoint.Port.ToString();
                         string[] cmd = data.Split(' ');
-                        if (cmd[0] == "/node_list")
+                        if (cmd[0] == "/share_nodes")
                         {
                             string nodeList = cmd[1];
                             if (nodeList != "")
                             {
-                                /*
-                                 * WAS HERE!
-                                 */
+                                string[] nodeProperties = nodeList.Split(',');
                                 List<RemoteNode> nodesToAdd = new List<RemoteNode>();
+                                for (int i = 0; i < nodeProperties.Length/2; i+=2)
+                                {
+                                    nodesToAdd.Add(new RemoteNode(nodeProperties[i], 
+                                        Convert.ToInt32(nodeProperties[i + 1])));
+                                }
+                                foreach(RemoteNode newNode in nodesToAdd)
+                                {
+                                    if (!node.IsNodeKnown(newNode.ip, newNode.port))
+                                    {
+                                        node.AddToKnownNodes(newNode.ip, newNode.port);
+                                    }
+                                }
                             }
                         }
                         if (!node.IsNodeKnown(ipEndPoint.Address.ToString(), ipEndPoint.Port))
                         {
 
-                            byte[] nodes = Encoding.ASCII.GetBytes("/node_list " + node.NodeList());
+                            byte[] nodes = Encoding.ASCII.GetBytes("/share_nodes " + node.NodeList());
                             node.AddToKnownNodes(ipEndPoint.Address.ToString(), ipEndPoint.Port);
-                            node.client.Send(nodes,nodes.Length, remoteIP, Convert.ToInt32(port));
+                            node.client.Send(nodes,nodes.Length, ipEndPoint.Address.ToString(), ipEndPoint.Port);
                         }
                         
                         node.nodeGUI.AppendText(node.Receive(data, remoteIP, port));//txtOutput.Text += Environment.NewLine + node.Receive(data, remoteIP, port);
@@ -163,7 +173,7 @@ namespace udp_p2p_client
             {
                 if (rn.ip != this.localIP && rn.port != this.port)
                 {
-                    list += rn.ip + ',' + rn.port + ';';
+                    list += rn.ip + ',' + rn.port + ',';
                 }
             }
             return list;
@@ -176,7 +186,7 @@ namespace udp_p2p_client
                 // msg = this.nickname + " says: " + msg + '`';
                 byte[] bytes = null;
                 string[] cmd = msg.Split(' ');
-                if (cmd[0] == "share_nodes")
+                if (cmd[0] == "/share_nodes")
                 {
                     foreach(RemoteNode rn1 in this.nodes)
                     {
@@ -184,7 +194,7 @@ namespace udp_p2p_client
                         {
                             if (rn1 != rn2)
                             {
-                                msg += rn2.ip + ":" + rn2.port;
+                                msg += rn2.ip + "," + rn2.port +",";
                                 bytes = Encoding.ASCII.GetBytes(msg);
                                 this.client.Send(bytes, bytes.Length, rn1.ip, rn1.port);
                             }
@@ -193,14 +203,21 @@ namespace udp_p2p_client
                 }
                 else
                 {
-                    
+                    this.nodeGUI.txtOutput.AppendText(Environment.NewLine + "You said: " + msg);
                     foreach (RemoteNode rn in this.nodes)
                     {
-                        this.nodeGUI.txtOutput.AppendText("You said: " + msg);
-                        msg = nickname + " says: " + msg;
-                        bytes = Encoding.ASCII.GetBytes(msg);
-                        IPEndPoint ipAddress = new IPEndPoint(IPAddress.Parse(rn.ip), rn.port);
-                        this.client.Send(bytes, bytes.Length, rn.ip, rn.port);
+                        
+                        if (rn.ip == this.localIP && rn.port == this.port)
+                        {
+                            // do nothing
+                        }
+                        else
+                        {
+                            msg = nickname + " says: " + msg;
+                            bytes = Encoding.ASCII.GetBytes(msg);
+                            IPEndPoint ipAddress = new IPEndPoint(IPAddress.Parse(rn.ip), rn.port);
+                            this.client.Send(bytes, bytes.Length, rn.ip, rn.port);
+                        }
                     }
                 }
                 
