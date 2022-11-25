@@ -41,6 +41,7 @@
             this.btnConnect = new System.Windows.Forms.Button();
             this.txtNickname = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -116,9 +117,9 @@
             // 
             this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(75, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(109, 75);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(255, 253);
+            this.pictureBox1.Size = new System.Drawing.Size(186, 184);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
@@ -150,6 +151,16 @@
             this.label5.TabIndex = 1;
             this.label5.Text = "Nickname";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Arial", 18F);
+            this.label6.Location = new System.Drawing.Point(89, 26);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(226, 35);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "P2P Messenger";
+            // 
             // LoginGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
@@ -161,6 +172,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtNickname);
             this.Controls.Add(this.txtRemotePort);
@@ -191,5 +203,6 @@
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.TextBox txtNickname;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
     }
 }

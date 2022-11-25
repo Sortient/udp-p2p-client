@@ -31,16 +31,12 @@ namespace udp_p2p_client
             this.remotePort = remotePort;
             this.nickname= nickname;
             node = new Node();
+            txtOutput.Text += "Welcome, " + nickname + Environment.NewLine;
+
             node.go(this, port, localIP, remoteIP, remotePort, nickname);
         }
 
-        private void btnSend_Click(object sender, EventArgs e)
-        {
-            //node.Send(this.localIP + ":" + this.port + " says: " + txtInput.Text, remoteIP, remotePort);
-            //txtInput.Text = "";
-            node.Send(txtInput.Text);
-            txtInput.Text = "";
-        }
+        private void btnSend_Click(object sender, EventArgs e) { SendText(); }
 
         public void AppendText(string text)
         {
@@ -73,7 +69,19 @@ namespace udp_p2p_client
 
         private void btnKill_Click(object sender, EventArgs e)
         {
+            node.client.Close();
             System.Windows.Forms.Application.Exit();
+        }
+
+        private void SendText()
+        {
+            node.Send(txtInput.Text);
+            txtInput.Text = "";
+        }
+
+        private void txtInput_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return) { SendText(); }
         }
     }
 }

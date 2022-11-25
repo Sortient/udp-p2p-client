@@ -10,7 +10,6 @@ namespace udp_p2p_client
     {
         public string ip;
         public int port;
-
         public RemoteNode(string ip, int port)
         {
             this.ip = ip;

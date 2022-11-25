@@ -13,7 +13,7 @@ namespace udp_p2p_client
 {
     internal class Node
     {
-        UdpClient client = null;
+        public UdpClient client = null;
         public int port;
         public NetworkListener nlistener = null;
         public NodeGUI nodeGUI = null;

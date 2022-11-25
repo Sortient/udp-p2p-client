@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace udp_p2p_client
 {
+    // taken from stackoverflow
     public abstract class AbstractThread
     {
         private Thread _thread;
