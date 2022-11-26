@@ -56,6 +56,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Location = new System.Drawing.Point(35, 279);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(69, 19);
@@ -65,6 +66,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Location = new System.Drawing.Point(35, 327);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(83, 19);
@@ -74,6 +76,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Location = new System.Drawing.Point(35, 375);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(85, 19);
@@ -83,6 +86,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Location = new System.Drawing.Point(35, 423);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(99, 19);
@@ -115,6 +119,7 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox1.Location = new System.Drawing.Point(109, 75);
@@ -140,11 +145,12 @@
             this.txtNickname.Name = "txtNickname";
             this.txtNickname.Size = new System.Drawing.Size(231, 27);
             this.txtNickname.TabIndex = 3;
-            this.txtNickname.Text = "username";
+            this.txtNickname.Text = "user123";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Location = new System.Drawing.Point(35, 466);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(81, 19);
@@ -154,6 +160,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Font = new System.Drawing.Font("Arial", 18F);
             this.label6.Location = new System.Drawing.Point(89, 26);
             this.label6.Name = "label6";
@@ -163,8 +170,10 @@
             // 
             // LoginGUI
             // 
+            this.AcceptButton = this.btnConnect;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(405, 582);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.pictureBox1);

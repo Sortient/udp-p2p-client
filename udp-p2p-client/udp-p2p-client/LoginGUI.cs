@@ -12,9 +12,13 @@ namespace udp_p2p_client
 {
     public partial class LoginGUI : Form
     {
+        string[] defaultNicknames = new string[] {"user", "user123", "sly bertram", "sneaky pete", "DefaultGuinea45",
+            "QuiGonJinn", "AnakinDidNothingWrong", "bill32", "Microsoft Sam", "NotElon" };
+        Random r = new Random();
         public LoginGUI()
         {
             InitializeComponent();
+            txtNickname.Text = defaultNicknames[r.Next(defaultNicknames.Length)];
         }
 
         private void btnConnect_Click(object sender, EventArgs e)

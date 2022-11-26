@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
+using System.Media;
 
 namespace udp_p2p_client
 {
@@ -21,6 +22,7 @@ namespace udp_p2p_client
         int remotePort;
         Node node = null;
         string nickname;
+        public SoundPlayer messageTone = new SoundPlayer(@"..\RoyaltyFreeMessageTone.wav");
         public NodeGUI(string localIP, int localPort, string remoteIP, int remotePort, string nickname)
         {
             InitializeComponent();
@@ -32,7 +34,7 @@ namespace udp_p2p_client
             this.nickname= nickname;
             node = new Node();
             txtOutput.Text += "Welcome, " + nickname + Environment.NewLine;
-
+            this.Icon = Properties.Resources.p2p;
             node.go(this, port, localIP, remoteIP, remotePort, nickname);
         }
 
@@ -64,6 +66,7 @@ namespace udp_p2p_client
         }
         private void NodeGUI_FormClosed(object sender, FormClosedEventArgs e)
         {
+            node.client.Close();
             System.Windows.Forms.Application.Exit();
         }
 
@@ -82,6 +85,16 @@ namespace udp_p2p_client
         private void txtInput_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Return) { SendText(); }
+        }
+
+        private void btnSort_Click(object sender, EventArgs e)
+        {
+            node.SortMessages();
+        }
+
+        public static void OnTimedPing(Object source, System.Timers.ElapsedEventArgs e)
+        {
+                
         }
     }
 }
