@@ -13,14 +13,16 @@ namespace udp_p2p_client
 {
     internal class Node
     {
+        public string messageToSend = "";
         public UdpClient client = null;
         public int port;
         public NetworkListener nlistener = null;
         public NodeGUI nodeGUI = null;
         public List<RemoteNode> nodes = new List<RemoteNode>();
+        public List<RemoteNode> temp_list = null;
         public string nickname;
         public string localIP;
-        public List<Tuple<DateTime, string>> messageHistory;
+        public List<Tuple<DateTime, string>> lstMessageHistory;
 
         public void go(NodeGUI gui,int port, string localIP, string remoteIP, int remotePort, string nickname)
         {
@@ -105,13 +107,23 @@ namespace udp_p2p_client
                         else if (cmd[0] == "/request_nodes")
                         {
                             byte[] nodes = Encoding.ASCII.GetBytes("/share_nodes " + node.NodeList());
-                            node.AddToKnownNodes(ipEndPoint.Address.ToString(), ipEndPoint.Port);
+                            if (!node.IsNodeKnown(ipEndPoint.Address.ToString(), ipEndPoint.Port))
+                            {
+                                node.AddToKnownNodes(ipEndPoint.Address.ToString(), ipEndPoint.Port);
+                            }
                             node.client.Send(nodes, nodes.Length, ipEndPoint.Address.ToString(), ipEndPoint.Port);
                         }
                         else if (cmd[0] == "/ping")
                         {
                             node.client.Send(Encoding.ASCII.GetBytes("/pong "), ("/pong ").Length,
                                 ipEndPoint.Address.ToString(), ipEndPoint.Port);
+                        }
+                        else if (cmd[0] == "/hello")
+                        {
+                            if (!node.IsNodeKnown(ipEndPoint.Address.ToString(), ipEndPoint.Port))
+                            {
+                                node.AddToKnownNodes(ipEndPoint.Address.ToString(), ipEndPoint.Port);
+                            }
                         }
                         else
                         {
@@ -124,6 +136,9 @@ namespace udp_p2p_client
 
                         if (!node.IsNodeKnown(ipEndPoint.Address.ToString(), ipEndPoint.Port))
                         {
+                            // node.RequestHistory(ipEndPoint.Address.ToString(), ipEndPoint.Port);
+
+                            this.node.Introduce(ipEndPoint.Address.ToString(), ipEndPoint.Port);
                             node.AddToKnownNodes(ipEndPoint.Address.ToString(), ipEndPoint.Port);
                             byte[] nodes = Encoding.ASCII.GetBytes("/share_nodes " + node.NodeList());
                             node.client.Send(nodes,nodes.Length, ipEndPoint.Address.ToString(), ipEndPoint.Port);
@@ -132,12 +147,15 @@ namespace udp_p2p_client
                             {
                                 node.client.Send(nodes, nodes.Length, rn.ip, rn.port);
                             }
-                            node.client.Send(Encoding.ASCII.GetBytes("/request_nodes "), ("/request_nodes ").Length, ipEndPoint.Address.ToString(), ipEndPoint.Port);
+
+                            node.client.Send(Encoding.ASCII.GetBytes("/request_nodes "), 
+                                ("/request_nodes ").Length, ipEndPoint.Address.ToString(), ipEndPoint.Port);
                         }
-                        
+                        this.node.ReorderList();
                         receive = new byte[65535];
                     }
                 }
+
                 catch (Exception)
                 {
 
@@ -222,6 +240,27 @@ namespace udp_p2p_client
             this.nodeGUI.AddToKnownNodesList(nodeToAdd);
         }
 
+        public void ReorderList()
+        {
+            temp_list = new List<RemoteNode>();
+
+            foreach(RemoteNode rn in nodes)
+            {
+                if(!temp_list.Contains(rn))
+                {
+                    temp_list.Add(rn);
+                }
+            }
+            nodes = temp_list;
+            temp_list= null;
+            nodeGUI.ClearKnownNodesList();
+
+            foreach(RemoteNode rn in nodes)
+            {
+                this.nodeGUI.AddToKnownNodesList(rn);
+            }
+        }
+
         public void AddToMessageHistory(string message)
         {
 
@@ -260,7 +299,7 @@ namespace udp_p2p_client
                         }
                     }
                 }
-                else if (cmd[0] == "ping")
+                else if (cmd[0] == "/ping")
                 {
                     foreach (RemoteNode rn in this.nodes)
                     {
@@ -286,23 +325,40 @@ namespace udp_p2p_client
                             this.client.Send(bytes, bytes.Length, rn.ip, rn.port);
                         }
                     }
+                    Tuple<DateTime, string> historyItem = new Tuple<DateTime, string>(DateTime.Now, msg);
+                    // lstMessageHistory.Add(historyItem);
                 }
             }
             catch (Exception e)
             {
                 throw;
             }
+
+            this.ReorderList();
         }
 
+        public void RequestHistory(string remoteIP, int remotePort)
+        {
+            byte[] bytes = Encoding.ASCII.GetBytes("/request_history");
+            this.client.Send(bytes, bytes.Length, remoteIP, remotePort);
+        }
         public void ListenForMessages()
         { 
+        }
+        
+        public void Introduce(string remoteIP, int remotePort)
+        {
+            byte[] bytes = Encoding.ASCII.GetBytes("/hello");
+            this.client.Send(bytes, bytes.Length, remoteIP, remotePort);
+            bytes = Encoding.ASCII.GetBytes("/request_nodes");
+            this.client.Send(bytes, bytes.Length, remoteIP, remotePort);
         }
 
         public void SortMessages()
         {
-            this.messageHistory.Sort();
+            this.lstMessageHistory.Sort();
             nodeGUI.txtOutput.Clear();
-            foreach (Tuple<DateTime, string> item in messageHistory)
+            foreach (Tuple<DateTime, string> item in lstMessageHistory)
             {
                 nodeGUI.txtOutput.Text += Environment.NewLine + item.Item2;
             }

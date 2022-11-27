@@ -38,6 +38,7 @@
             this.btnSort = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.tmrPing = new System.Windows.Forms.Timer(this.components);
+            this.btnBotSend = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtOutput
@@ -115,6 +116,16 @@
             // 
             this.tmrPing.Interval = 20000;
             // 
+            // btnBotSend
+            // 
+            this.btnBotSend.Location = new System.Drawing.Point(460, 54);
+            this.btnBotSend.Name = "btnBotSend";
+            this.btnBotSend.Size = new System.Drawing.Size(272, 30);
+            this.btnBotSend.TabIndex = 6;
+            this.btnBotSend.Text = "Generate Chat Data";
+            this.btnBotSend.UseVisualStyleBackColor = true;
+            this.btnBotSend.Click += new System.EventHandler(this.btnBotSend_Click);
+            // 
             // NodeGUI
             // 
             this.AcceptButton = this.btnSend;
@@ -124,6 +135,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(744, 491);
+            this.Controls.Add(this.btnBotSend);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnSort);
             this.Controls.Add(this.lstKnownNodes);
@@ -153,5 +165,6 @@
         private System.Windows.Forms.Button btnSort;
         public System.Windows.Forms.Label label1;
         private System.Windows.Forms.Timer tmrPing;
+        private System.Windows.Forms.Button btnBotSend;
     }
 }

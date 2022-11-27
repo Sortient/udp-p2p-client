@@ -12,8 +12,9 @@ namespace udp_p2p_client
 {
     public partial class LoginGUI : Form
     {
-        string[] defaultNicknames = new string[] {"user", "user123", "sly bertram", "sneaky pete", "DefaultGuinea45",
-            "QuiGonJinn", "AnakinDidNothingWrong", "bill32", "Microsoft Sam", "NotElon" };
+        string[] defaultNicknames = new string[] {"user", "user123", "sly bertram", "sneaky pete", "slartibartfast",
+            "QuiGonJinn", "DarthPlagueisTheWise", "bill32", "Microsoft Sam", "DefinitelyNotElon", "HappyLarry", "I_HATE_PIGEONS",
+            "CraggyIslandMaori", "LenBrennan", "ListerOfSmeg"};
         Random r = new Random();
         public LoginGUI()
         {
@@ -25,7 +26,7 @@ namespace udp_p2p_client
         {
             string localIP = txtLocalIPAddress.Text;
             int localPort = Convert.ToInt32(txtLocalPort.Text);
-            string remoteIP = txtLocalIPAddress.Text;
+            string remoteIP = txtRemoteIP.Text;
             int remotePort = Convert.ToInt32(txtRemotePort.Text);
             string nickname = txtNickname.Text;
 

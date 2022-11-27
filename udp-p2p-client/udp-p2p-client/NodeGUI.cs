@@ -38,7 +38,7 @@ namespace udp_p2p_client
             node.go(this, port, localIP, remoteIP, remotePort, nickname);
         }
 
-        private void btnSend_Click(object sender, EventArgs e) { SendText(); }
+        private void btnSend_Click(object sender, EventArgs e) { SendText(false); }
 
         public void AppendText(string text)
         {
@@ -62,7 +62,18 @@ namespace udp_p2p_client
             {
                 lstKnownNodes.Items.Add(rn.ip + rn.port);
             }
-            
+        }
+
+        public void ClearKnownNodesList()
+        {
+            if (lstKnownNodes.InvokeRequired)
+            {
+                lstKnownNodes.Invoke(new MethodInvoker(delegate { lstKnownNodes.Items.Clear(); }));
+            }
+            else
+            {
+                lstKnownNodes.Items.Clear();
+            }
         }
         private void NodeGUI_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -76,15 +87,23 @@ namespace udp_p2p_client
             System.Windows.Forms.Application.Exit();
         }
 
-        private void SendText()
+        private void SendText(bool isBot)
         {
-            node.Send(txtInput.Text);
-            txtInput.Text = "";
+            if(!isBot)
+            {
+                node.messageToSend = txtInput.Text;
+                node.Send(txtInput.Text);
+                txtInput.Text = "";
+            }
+            else
+            {
+                node.Send("Beep boop... this is an auto generated message!");
+            }
         }
 
         private void txtInput_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)Keys.Return) { SendText(); }
+            if (e.KeyChar == (char)Keys.Return) { SendText(false); }
         }
 
         private void btnSort_Click(object sender, EventArgs e)
@@ -95,6 +114,11 @@ namespace udp_p2p_client
         public static void OnTimedPing(Object source, System.Timers.ElapsedEventArgs e)
         {
                 
+        }
+
+        private void btnBotSend_Click(object sender, EventArgs e)
+        {
+            SendText(true);
         }
     }
 }
