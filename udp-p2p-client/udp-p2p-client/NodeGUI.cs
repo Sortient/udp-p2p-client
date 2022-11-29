@@ -21,8 +21,14 @@ namespace udp_p2p_client
         string remoteIP;
         int remotePort;
         Node node = null;
+        bool botStarted = false;
         string nickname;
+        string[] botMessages = new string[] {"Beep boop... hello there!", "How's it going?", "Did you see that " +
+            "ludicrous display last night?", "This is an automated message.", "CHAT BOT ACTIVE!", "Hi guys!", "Great work y'all!",
+            "I just started using this great new Distributed Chat system!", "What's everyone having for dinner?", "Probably gonna have to go soon",
+            "I love P2P Messenger", "Craving some pringles right about now", "Played any new games recently?"};
         public SoundPlayer messageTone = new SoundPlayer(@"..\RoyaltyFreeMessageTone.wav");
+        Random r = new Random();
         public NodeGUI(string localIP, int localPort, string remoteIP, int remotePort, string nickname)
         {
             InitializeComponent();
@@ -44,11 +50,11 @@ namespace udp_p2p_client
         {
             if (txtOutput.InvokeRequired)
             {
-                txtOutput.Invoke(new MethodInvoker(delegate { txtOutput.Text += Environment.NewLine + text; }));
+                txtOutput.Invoke(new MethodInvoker(delegate { txtOutput.AppendText(Environment.NewLine + text); }));
             }
             else
             {
-                txtOutput.Text += Environment.NewLine + text;
+                txtOutput.AppendText(Environment.NewLine + text);
             }
         }
 
@@ -89,15 +95,23 @@ namespace udp_p2p_client
 
         private void SendText(bool isBot)
         {
-            if(!isBot)
+            if (!txtInput.Text.Contains("`"))
             {
-                node.messageToSend = txtInput.Text;
-                node.Send(txtInput.Text);
-                txtInput.Text = "";
+                if (!isBot)
+                {
+                    node.messageToSend = txtInput.Text;
+                    node.Send(txtInput.Text);
+                    txtInput.Text = "";
+                }
+                else
+                {
+                    int index = r.Next(botMessages.Length);
+                    node.Send(botMessages[index]);
+                }
             }
             else
             {
-                node.Send("Beep boop... this is an auto generated message!");
+                MessageBox.Show("Invalid character.");
             }
         }
 
@@ -117,6 +131,20 @@ namespace udp_p2p_client
         }
 
         private void btnBotSend_Click(object sender, EventArgs e)
+        {
+            if (botStarted == false)
+            {
+                timerBot.Start();
+                botStarted = true;
+            }
+            else
+            {
+                timerBot.Stop();
+                botStarted = false;
+            }
+        }
+
+        private void timerBot_Tick(object sender, EventArgs e)
         {
             SendText(true);
         }

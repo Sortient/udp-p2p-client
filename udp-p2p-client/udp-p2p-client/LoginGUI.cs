@@ -12,9 +12,10 @@ namespace udp_p2p_client
 {
     public partial class LoginGUI : Form
     {
-        string[] defaultNicknames = new string[] {"user", "user123", "sly bertram", "sneaky pete", "slartibartfast",
+        string[] defaultNicknames = new string[] {"user123", "greg", "bill", "larry",
+            "wilhelm", "sly bertram", "sneaky pete"}; /*{"user", "user123", "sly bertram", "sneaky pete", "slartibartfast",
             "QuiGonJinn", "DarthPlagueisTheWise", "bill32", "Microsoft Sam", "DefinitelyNotElon", "HappyLarry", "I_HATE_PIGEONS",
-            "CraggyIslandMaori", "LenBrennan", "ListerOfSmeg"};
+            "CraggyIslandMaori", "LenBrennan", "ListerOfSmeg"};*/
         Random r = new Random();
         public LoginGUI()
         {

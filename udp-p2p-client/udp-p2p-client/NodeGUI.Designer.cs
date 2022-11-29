@@ -39,6 +39,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tmrPing = new System.Windows.Forms.Timer(this.components);
             this.btnBotSend = new System.Windows.Forms.Button();
+            this.timerBot = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // txtOutput
@@ -108,9 +109,9 @@
             this.label1.Font = new System.Drawing.Font("Arial", 15F);
             this.label1.Location = new System.Drawing.Point(14, 28);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(156, 28);
+            this.label1.Size = new System.Drawing.Size(178, 28);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Listening on:";
+            this.label1.Text = "{listening data}";
             // 
             // tmrPing
             // 
@@ -122,9 +123,14 @@
             this.btnBotSend.Name = "btnBotSend";
             this.btnBotSend.Size = new System.Drawing.Size(272, 30);
             this.btnBotSend.TabIndex = 6;
-            this.btnBotSend.Text = "Generate Chat Data";
+            this.btnBotSend.Text = "Toggle Bot";
             this.btnBotSend.UseVisualStyleBackColor = true;
             this.btnBotSend.Click += new System.EventHandler(this.btnBotSend_Click);
+            // 
+            // timerBot
+            // 
+            this.timerBot.Interval = 2000;
+            this.timerBot.Tick += new System.EventHandler(this.timerBot_Tick);
             // 
             // NodeGUI
             // 
@@ -166,5 +172,6 @@
         public System.Windows.Forms.Label label1;
         private System.Windows.Forms.Timer tmrPing;
         private System.Windows.Forms.Button btnBotSend;
+        private System.Windows.Forms.Timer timerBot;
     }
 }

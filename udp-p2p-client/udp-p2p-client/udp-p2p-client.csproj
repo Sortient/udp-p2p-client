@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractThread.cs" />
+    <Compile Include="ChatDataPacket.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

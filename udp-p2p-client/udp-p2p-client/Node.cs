@@ -22,7 +22,7 @@ namespace udp_p2p_client
         public List<RemoteNode> temp_list = null;
         public string nickname;
         public string localIP;
-        public List<Tuple<DateTime, string>> lstMessageHistory;
+        public List<Tuple<DateTime, long, string, string>> messageHistory = new List<Tuple<DateTime, long, string, string>>();
 
         public void go(NodeGUI gui,int port, string localIP, string remoteIP, int remotePort, string nickname)
         {
@@ -70,12 +70,14 @@ namespace udp_p2p_client
             public override void Run()
             {
                 IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                
                 try
                 {
                     byte[] receive = new byte[65535];
                     while(true)
                     {
                         receive = node.client.Receive(ref ipEndPoint);
+                        
                         string data = Encoding.ASCII.GetString(receive);
                         string remoteIP = ipEndPoint.Address.ToString();
                         string port = ipEndPoint.Port.ToString();
@@ -88,7 +90,7 @@ namespace udp_p2p_client
                             {
                                 string[] nodeProperties = nodeList.Split(',');
                                 List<RemoteNode> nodesToAdd = new List<RemoteNode>();
-                                for (int i = 0; i < nodeProperties.Length / 2; i += 2)
+                                for (int i = 0; i < nodeProperties.Length - 1; i += 2)
                                 {
                                     nodesToAdd.Add(new RemoteNode(nodeProperties[i],
                                         Convert.ToInt32(nodeProperties[i + 1])));
@@ -131,7 +133,10 @@ namespace udp_p2p_client
                             //Tuple<DateTime, string> tuple = Tuple.Create(time, cmd[0]);
                             //node.messageHistory.Add(tuple);
                             // node.nodeGUI.messageTone.Play();
-                            node.nodeGUI.AppendText(node.Receive(data, remoteIP, port));
+                            ChatDataPacket cdp = new ChatDataPacket(receive);
+                            //node.nodeGUI.AppendText(node.Receive(data, remoteIP, port));
+                            node.nodeGUI.AppendText(cdp.nickname + " says: " + cdp.message);
+                            node.AddToMessageHistory(cdp);
                         }
 
                         if (!node.IsNodeKnown(ipEndPoint.Address.ToString(), ipEndPoint.Port))
@@ -156,10 +161,9 @@ namespace udp_p2p_client
                     }
                 }
 
-                catch (Exception)
+                catch (SocketException e)
                 {
-
-                    throw;
+                    // MessageBox.Show(e.StackTrace);
                 }
                 
             }
@@ -261,9 +265,24 @@ namespace udp_p2p_client
             }
         }
 
-        public void AddToMessageHistory(string message)
+        public void AddToMessageHistory(ChatDataPacket packet)
         {
-
+            bool isInHistory = false;/*
+            for (int i = 0; i < messageHistory.Count; i++)
+            {
+                if (messageHistory[i].Item2 == packet.messageID)
+                {
+                    isInHistory = true;
+                }
+            }
+            */
+            if (!isInHistory)
+            {
+                Tuple<DateTime, long, string, string> itemToAdd;
+                itemToAdd = new Tuple<DateTime, long, string, string>(Convert.ToDateTime(packet.timestamp), packet.messageID,
+                    packet.message, packet.nickname);
+                this.messageHistory.Add(itemToAdd);
+            }
         }
 
         public string NodeList()
@@ -284,6 +303,7 @@ namespace udp_p2p_client
                 // msg = this.nickname + " says: " + msg + '`';
                 byte[] bytes = null;
                 string[] cmd = msg.Split(' ');
+                ChatDataPacket packet = new ChatDataPacket(this.nickname, this.localIP, this.port, msg, DateTime.Now);
                 if (cmd[0] == "/share_nodes")
                 {
                     foreach(RemoteNode rn1 in this.nodes)
@@ -310,11 +330,12 @@ namespace udp_p2p_client
                 else
                 {
                     this.nodeGUI.txtOutput.AppendText(Environment.NewLine + "You said: " + msg);
-                    msg = nickname + " says: " + msg; //DateTime.Now.ToString() + " " + nickname + " says: " + msg;
+                    //msg = nickname + " says: " + msg; //DateTime.Now.ToString() + " " + nickname + " says: " + msg;
+                    //bytes = Encoding.ASCII.GetBytes(packet.nickname + ",")
+                    msg = this.nickname + "`" + this.localIP + "`" + this.port + "`" + msg + "`" + DateTime.Now.ToString();
                     bytes = Encoding.ASCII.GetBytes(msg);
                     foreach (RemoteNode rn in this.nodes)
                     {
-                        
                         if (rn.ip == this.localIP && rn.port == this.port)
                         {
                             // do nothing
@@ -323,9 +344,11 @@ namespace udp_p2p_client
                         {                            
                             IPEndPoint ipAddress = new IPEndPoint(IPAddress.Parse(rn.ip), rn.port);
                             this.client.Send(bytes, bytes.Length, rn.ip, rn.port);
+                            
                         }
                     }
                     Tuple<DateTime, string> historyItem = new Tuple<DateTime, string>(DateTime.Now, msg);
+                    this.AddToMessageHistory(packet);
                     // lstMessageHistory.Add(historyItem);
                 }
             }
@@ -356,11 +379,12 @@ namespace udp_p2p_client
 
         public void SortMessages()
         {
-            this.lstMessageHistory.Sort();
+            this.messageHistory.Sort();
             nodeGUI.txtOutput.Clear();
-            foreach (Tuple<DateTime, string> item in lstMessageHistory)
+            nodeGUI.AppendText("Deleting chat. Rebuilding from local data..." + Environment.NewLine);
+            foreach (Tuple<DateTime, long, string, string> item in messageHistory)
             {
-                nodeGUI.txtOutput.Text += Environment.NewLine + item.Item2;
+                nodeGUI.txtOutput.Text += Environment.NewLine + item.Item4 + " said: " + item.Item3;
             }
         }
     }
