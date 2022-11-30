@@ -119,12 +119,13 @@
             // 
             // btnBotSend
             // 
+            this.btnBotSend.BackColor = System.Drawing.Color.LightCoral;
             this.btnBotSend.Location = new System.Drawing.Point(460, 54);
             this.btnBotSend.Name = "btnBotSend";
             this.btnBotSend.Size = new System.Drawing.Size(272, 30);
             this.btnBotSend.TabIndex = 6;
             this.btnBotSend.Text = "Toggle Bot";
-            this.btnBotSend.UseVisualStyleBackColor = true;
+            this.btnBotSend.UseVisualStyleBackColor = false;
             this.btnBotSend.Click += new System.EventHandler(this.btnBotSend_Click);
             // 
             // timerBot

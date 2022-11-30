@@ -7,12 +7,14 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace udp_p2p_client
 {
     internal class Node
     {
+        public bool debug = false;
         public string messageToSend = "";
         public UdpClient client = null;
         public int port;
@@ -22,21 +24,24 @@ namespace udp_p2p_client
         public List<RemoteNode> temp_list = null;
         public string nickname;
         public string localIP;
+        public IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
         public List<Tuple<DateTime, long, string, string>> messageHistory = new List<Tuple<DateTime, long, string, string>>();
 
-        public void go(NodeGUI gui,int port, string localIP, string remoteIP, int remotePort, string nickname)
+        public void go(NodeGUI gui, int port, string localIP, string remoteIP, int remotePort, string nickname)
         {
             this.port = port;
-            this.client= new UdpClient(port);
+            this.client = new UdpClient(port);
             this.nodeGUI = gui;
             this.nickname = nickname;
             this.localIP = localIP;
-            this.nodeGUI.label1.Text = this.nickname + " listening on: " 
+            this.nodeGUI.label1.Text = this.nickname + " listening on: "
                 + this.localIP + ":" + this.port;
             nlistener = new NetworkListener(this);
             RemoteNode initialNode = new RemoteNode(remoteIP, remotePort);
             nodes.Add(initialNode);
             this.nodeGUI.AddToKnownNodesList(initialNode);
+            Introduce(initialNode.ip, initialNode.port);
+            //client.Client.ReceiveTimeout = 1000;
             nlistener.Start();
         }
 
@@ -44,7 +49,7 @@ namespace udp_p2p_client
         {
             int port;
             Node node = null;
-            
+
             public NetworkListener(Node n)
             {
                 this.node = n;
@@ -70,14 +75,21 @@ namespace udp_p2p_client
             public override void Run()
             {
                 IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
-                
+
                 try
                 {
                     byte[] receive = new byte[65535];
-                    while(true)
+                    
+                    while (true)
                     {
+                        if (node.debug) { node.nodeGUI.AppendText("Waiting on packet..."); }
                         receive = node.client.Receive(ref ipEndPoint);
-                        
+                        if (node.debug)
+                        {
+                            node.nodeGUI.AppendText("Packet received.");
+                            node.nodeGUI.AppendText(ipEndPoint.ToString());
+                        }
+
                         string data = Encoding.ASCII.GetString(receive);
                         string remoteIP = ipEndPoint.Address.ToString();
                         string port = ipEndPoint.Port.ToString();
@@ -127,6 +139,35 @@ namespace udp_p2p_client
                                 node.AddToKnownNodes(ipEndPoint.Address.ToString(), ipEndPoint.Port);
                             }
                         }
+                        else if (cmd[0] == "/request_history")
+                        {
+                            string history = "/send_history ";
+                            foreach (Tuple<DateTime, long, string, string> item in node.messageHistory)
+                            {
+                                history = "/send_history ";
+                                history += item.Item1.ToString() + ',' + item.Item2.ToString() + ',' 
+                                    + item.Item3 + ',' + item.Item4;
+                                node.client.Send(Encoding.ASCII.GetBytes(history), history.Length,
+                                ipEndPoint.Address.ToString(), ipEndPoint.Port);
+                            }
+                            history = "/history_completed";
+                            node.client.Send(Encoding.ASCII.GetBytes(history), history.Length,
+                                ipEndPoint.Address.ToString(), ipEndPoint.Port);
+                        }
+                        else if (cmd[0] == "/send_history")
+                        {
+                            string[] strings = (data.Remove(0, "/send_history ".Length)).Split(',');
+                            node.messageHistory.Add(new Tuple<DateTime, long, string, string>(Convert.ToDateTime(strings[0]),
+                                (long)Convert.ToDouble(strings[1]), strings[2], strings[3]));
+                            
+                        }
+                        else if (cmd[0] == "/history_completed")
+                        {
+                            List<Tuple<DateTime, long, string, string>> temp = new List<Tuple<DateTime, long, string, string>>();
+                            temp = node.messageHistory.Distinct().ToList();
+                            node.messageHistory = temp;
+                            node.SortMessages();
+                        }
                         else
                         {
                             //DateTime time = Convert.ToDateTime(cmd[0]);
@@ -146,14 +187,14 @@ namespace udp_p2p_client
                             this.node.Introduce(ipEndPoint.Address.ToString(), ipEndPoint.Port);
                             node.AddToKnownNodes(ipEndPoint.Address.ToString(), ipEndPoint.Port);
                             byte[] nodes = Encoding.ASCII.GetBytes("/share_nodes " + node.NodeList());
-                            node.client.Send(nodes,nodes.Length, ipEndPoint.Address.ToString(), ipEndPoint.Port);
+                            node.client.Send(nodes, nodes.Length, ipEndPoint.Address.ToString(), ipEndPoint.Port);
 
-                            foreach(RemoteNode rn in node.nodes)
+                            foreach (RemoteNode rn in node.nodes)
                             {
                                 node.client.Send(nodes, nodes.Length, rn.ip, rn.port);
                             }
 
-                            node.client.Send(Encoding.ASCII.GetBytes("/request_nodes "), 
+                            node.client.Send(Encoding.ASCII.GetBytes("/request_nodes "),
                                 ("/request_nodes ").Length, ipEndPoint.Address.ToString(), ipEndPoint.Port);
                         }
                         this.node.ReorderList();
@@ -164,10 +205,14 @@ namespace udp_p2p_client
                 catch (SocketException e)
                 {
                     // MessageBox.Show(e.StackTrace);
+                    // node.nodeGUI.AppendText(ipEndPoint.ToString());
+                    // node.nodeGUI.AppendText("A node disconnected.");
+                    ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                    Run();
                 }
-                
+
             }
-            
+
             private void SetText(string text)
             {
 
@@ -209,6 +254,7 @@ namespace udp_p2p_client
                     node.client.Send(Encoding.ASCII.GetBytes("/pong "), ("/pong ").Length,
                         ipEndPoint.Address.ToString(), ipEndPoint.Port);
                 }
+              
                 else
                 {
                     //DateTime time = Convert.ToDateTime(cmd[0]);
@@ -231,7 +277,7 @@ namespace udp_p2p_client
                 if (rn.ip == ip && rn.port == port)
                 {
                     return true;
-                    
+
                 }
             }
             return false;
@@ -248,18 +294,18 @@ namespace udp_p2p_client
         {
             temp_list = new List<RemoteNode>();
 
-            foreach(RemoteNode rn in nodes)
+            foreach (RemoteNode rn in nodes)
             {
-                if(!temp_list.Contains(rn))
+                if (!temp_list.Contains(rn))
                 {
                     temp_list.Add(rn);
                 }
             }
             nodes = temp_list;
-            temp_list= null;
+            temp_list = null;
             nodeGUI.ClearKnownNodesList();
 
-            foreach(RemoteNode rn in nodes)
+            foreach (RemoteNode rn in nodes)
             {
                 this.nodeGUI.AddToKnownNodesList(rn);
             }
@@ -306,13 +352,13 @@ namespace udp_p2p_client
                 ChatDataPacket packet = new ChatDataPacket(this.nickname, this.localIP, this.port, msg, DateTime.Now);
                 if (cmd[0] == "/share_nodes")
                 {
-                    foreach(RemoteNode rn1 in this.nodes)
+                    foreach (RemoteNode rn1 in this.nodes)
                     {
                         foreach (RemoteNode rn2 in this.nodes)
                         {
                             if (rn1 != rn2)
                             {
-                                msg += rn2.ip + "," + rn2.port +",";
+                                msg += rn2.ip + "," + rn2.port + ",";
                                 bytes = Encoding.ASCII.GetBytes(msg);
                                 this.client.Send(bytes, bytes.Length, rn1.ip, rn1.port);
                             }
@@ -327,6 +373,15 @@ namespace udp_p2p_client
                         this.client.Send(bytes, bytes.Length, rn.ip, rn.port);
                     }
                 }
+                else if (cmd[0] == "/request_history")
+                {
+                    foreach (RemoteNode rn in this.nodes)
+                    {
+                        bytes = Encoding.ASCII.GetBytes("/request_history ");
+                        this.client.Send(bytes, bytes.Length, rn.ip, rn.port);
+                    }
+                }
+
                 else
                 {
                     this.nodeGUI.txtOutput.AppendText(Environment.NewLine + "You said: " + msg);
@@ -341,10 +396,10 @@ namespace udp_p2p_client
                             // do nothing
                         }
                         else
-                        {                            
-                            IPEndPoint ipAddress = new IPEndPoint(IPAddress.Parse(rn.ip), rn.port);
+                        {
+                            //IPEndPoint ipAddress = new IPEndPoint(IPAddress.Parse(rn.ip), rn.port);
                             this.client.Send(bytes, bytes.Length, rn.ip, rn.port);
-                            
+
                         }
                     }
                     Tuple<DateTime, string> historyItem = new Tuple<DateTime, string>(DateTime.Now, msg);
@@ -366,14 +421,16 @@ namespace udp_p2p_client
             this.client.Send(bytes, bytes.Length, remoteIP, remotePort);
         }
         public void ListenForMessages()
-        { 
+        {
         }
-        
+
         public void Introduce(string remoteIP, int remotePort)
         {
             byte[] bytes = Encoding.ASCII.GetBytes("/hello");
             this.client.Send(bytes, bytes.Length, remoteIP, remotePort);
             bytes = Encoding.ASCII.GetBytes("/request_nodes");
+            this.client.Send(bytes, bytes.Length, remoteIP, remotePort);
+            bytes = Encoding.ASCII.GetBytes("/request_history ");
             this.client.Send(bytes, bytes.Length, remoteIP, remotePort);
         }
 

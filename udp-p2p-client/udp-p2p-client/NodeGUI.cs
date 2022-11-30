@@ -23,13 +23,14 @@ namespace udp_p2p_client
         Node node = null;
         bool botStarted = false;
         string nickname;
+        public bool debug;
         string[] botMessages = new string[] {"Beep boop... hello there!", "How's it going?", "Did you see that " +
             "ludicrous display last night?", "This is an automated message.", "CHAT BOT ACTIVE!", "Hi guys!", "Great work y'all!",
             "I just started using this great new Distributed Chat system!", "What's everyone having for dinner?", "Probably gonna have to go soon",
             "I love P2P Messenger", "Craving some pringles right about now", "Played any new games recently?"};
         public SoundPlayer messageTone = new SoundPlayer(@"..\RoyaltyFreeMessageTone.wav");
         Random r = new Random();
-        public NodeGUI(string localIP, int localPort, string remoteIP, int remotePort, string nickname)
+        public NodeGUI(string localIP, int localPort, string remoteIP, int remotePort, string nickname, bool debug)
         {
             InitializeComponent();
 
@@ -38,6 +39,7 @@ namespace udp_p2p_client
             this.remoteIP = remoteIP;
             this.remotePort = remotePort;
             this.nickname= nickname;
+            this.debug = debug;
             node = new Node();
             txtOutput.Text += "Welcome, " + nickname + Environment.NewLine;
             this.Icon = Properties.Resources.p2p;
@@ -130,17 +132,31 @@ namespace udp_p2p_client
                 
         }
 
+        public void ClearText()
+        {
+            if (txtOutput.InvokeRequired)
+            {
+                txtOutput.Invoke(new MethodInvoker(delegate { txtOutput.Clear(); }));
+            }
+            else
+            {
+                txtOutput.Clear();
+            }
+        }
+
         private void btnBotSend_Click(object sender, EventArgs e)
         {
             if (botStarted == false)
             {
                 timerBot.Start();
                 botStarted = true;
+                btnBotSend.BackColor = Color.LightGreen;
             }
             else
             {
                 timerBot.Stop();
                 botStarted = false;
+                btnBotSend.BackColor = Color.LightCoral;
             }
         }
 

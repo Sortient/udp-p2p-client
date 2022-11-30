@@ -13,14 +13,18 @@ namespace udp_p2p_client
     public partial class LoginGUI : Form
     {
         string[] defaultNicknames = new string[] {"user123", "greg", "bill", "larry",
-            "wilhelm", "sly bertram", "sneaky pete"}; /*{"user", "user123", "sly bertram", "sneaky pete", "slartibartfast",
-            "QuiGonJinn", "DarthPlagueisTheWise", "bill32", "Microsoft Sam", "DefinitelyNotElon", "HappyLarry", "I_HATE_PIGEONS",
-            "CraggyIslandMaori", "LenBrennan", "ListerOfSmeg"};*/
+            "wilhelm", "sly bertram", "sneaky pete"};
+        string[] adjectives = new string[] {"Cowardly","Lovely","Slovenly","Big","Small","Lil",
+        "Hated","Loved","Stupid","Sly"};
+        string[] nouns = new string[] {"Badger","Gamer","Snail","Guy","Clown","Cricket","User",
+            "Soldier", "Peep"};
         Random r = new Random();
+
         public LoginGUI()
         {
             InitializeComponent();
-            txtNickname.Text = defaultNicknames[r.Next(defaultNicknames.Length)];
+            txtNickname.Text = adjectives[r.Next(adjectives.Length)] +
+                nouns[r.Next(nouns.Length)] + r.Next(99).ToString(); //defaultNicknames[r.Next(defaultNicknames.Length)];
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -30,8 +34,14 @@ namespace udp_p2p_client
             string remoteIP = txtRemoteIP.Text;
             int remotePort = Convert.ToInt32(txtRemotePort.Text);
             string nickname = txtNickname.Text;
+            bool debug = false;
 
-            NodeGUI nodeGUI = new NodeGUI(localIP, localPort, remoteIP, remotePort, nickname);
+            if (chkDebug.Checked)
+            {
+                debug = true;
+            }
+
+            NodeGUI nodeGUI = new NodeGUI(localIP, localPort, remoteIP, remotePort, nickname, debug);
             nodeGUI.Show();
             this.Hide();
         }

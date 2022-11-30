@@ -42,6 +42,7 @@
             this.txtNickname = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.chkDebug = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -131,7 +132,7 @@
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(39, 521);
+            this.btnConnect.Location = new System.Drawing.Point(39, 507);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(337, 39);
             this.btnConnect.TabIndex = 4;
@@ -168,13 +169,27 @@
             this.label6.TabIndex = 1;
             this.label6.Text = "P2P Messenger";
             // 
+            // chkDebug
+            // 
+            this.chkDebug.AutoSize = true;
+            this.chkDebug.BackColor = System.Drawing.Color.Transparent;
+            this.chkDebug.Checked = true;
+            this.chkDebug.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkDebug.Location = new System.Drawing.Point(39, 561);
+            this.chkDebug.Name = "chkDebug";
+            this.chkDebug.Size = new System.Drawing.Size(88, 23);
+            this.chkDebug.TabIndex = 5;
+            this.chkDebug.Text = "Debug?";
+            this.chkDebug.UseVisualStyleBackColor = false;
+            // 
             // LoginGUI
             // 
             this.AcceptButton = this.btnConnect;
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(405, 582);
+            this.ClientSize = new System.Drawing.Size(405, 610);
+            this.Controls.Add(this.chkDebug);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label5);
@@ -213,5 +228,6 @@
         private System.Windows.Forms.TextBox txtNickname;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox chkDebug;
     }
 }
