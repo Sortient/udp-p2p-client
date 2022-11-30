@@ -437,11 +437,12 @@ namespace udp_p2p_client
         public void SortMessages()
         {
             this.messageHistory.Sort();
-            nodeGUI.txtOutput.Clear();
-            nodeGUI.AppendText("Deleting chat. Rebuilding from local data..." + Environment.NewLine);
+            nodeGUI.ClearText();
+            nodeGUI.AppendText("Welcome, " + this.nickname);
+            // nodeGUI.AppendText("Deleting chat. Rebuilding from local data..." + Environment.NewLine);
             foreach (Tuple<DateTime, long, string, string> item in messageHistory)
             {
-                nodeGUI.txtOutput.Text += Environment.NewLine + item.Item4 + " said: " + item.Item3;
+                nodeGUI.AppendText(item.Item4 + " said: " + item.Item3);
             }
         }
     }

@@ -27,7 +27,10 @@ namespace udp_p2p_client
         string[] botMessages = new string[] {"Beep boop... hello there!", "How's it going?", "Did you see that " +
             "ludicrous display last night?", "This is an automated message.", "CHAT BOT ACTIVE!", "Hi guys!", "Great work y'all!",
             "I just started using this great new Distributed Chat system!", "What's everyone having for dinner?", "Probably gonna have to go soon",
-            "I love P2P Messenger", "Craving some pringles right about now", "Played any new games recently?"};
+            "I love P2P Messenger", "Craving some pringles right about now", "Played any new games recently?",
+            "Wanna play quake?", "hi wua?", "a/s/l?", "I am from the San Fransisco Bay Area", "I love Shredded Wheat",
+            "Seen the new season of big bang theory?", "Am I a living, thinking creature?", "greetings", "Chatbot Not Destroy",
+            "yummy messages! :)"};
         public SoundPlayer messageTone = new SoundPlayer(@"..\RoyaltyFreeMessageTone.wav");
         Random r = new Random();
         public NodeGUI(string localIP, int localPort, string remoteIP, int remotePort, string nickname, bool debug)
