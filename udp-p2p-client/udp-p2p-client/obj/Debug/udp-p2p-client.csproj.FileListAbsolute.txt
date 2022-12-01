@@ -26,3 +26,7 @@ F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\obj\Debug\ud
 F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.csproj.CoreCompileInputs.cache
 F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.exe
 F:\QUB Stage 4\CSC4010\udp-p2p-client\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.pdb
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\bin\Debug\HtmlAgilityPack.dll
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\bin\Debug\HtmlAgilityPack.xml
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.csproj.CopyComplete

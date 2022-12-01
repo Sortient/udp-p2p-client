@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -16,7 +17,9 @@ namespace udp_p2p_client
     {
         public bool debug = false;
         public string messageToSend = "";
+        string externalString;
         public UdpClient client = null;
+        public WebClient externalClient = new WebClient();
         public int port;
         public NetworkListener nlistener = null;
         public NodeGUI nodeGUI = null;
@@ -25,6 +28,7 @@ namespace udp_p2p_client
         public string nickname;
         public string localIP;
         public IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
+        ImageConverter ic = new ImageConverter();
         public List<Tuple<DateTime, long, string, string>> messageHistory = new List<Tuple<DateTime, long, string, string>>();
 
         public void go(NodeGUI gui, int port, string localIP, string remoteIP, int remotePort, string nickname)
@@ -42,6 +46,7 @@ namespace udp_p2p_client
             this.nodeGUI.AddToKnownNodesList(initialNode);
             Introduce(initialNode.ip, initialNode.port);
             //client.Client.ReceiveTimeout = 1000;
+
             nlistener.Start();
         }
 
@@ -325,9 +330,17 @@ namespace udp_p2p_client
             if (!isInHistory)
             {
                 Tuple<DateTime, long, string, string> itemToAdd;
-                itemToAdd = new Tuple<DateTime, long, string, string>(Convert.ToDateTime(packet.timestamp), packet.messageID,
-                    packet.message, packet.nickname);
-                this.messageHistory.Add(itemToAdd);
+                try
+                {
+                    itemToAdd = new Tuple<DateTime, long, string, string>(Convert.ToDateTime(packet.timestamp), packet.messageID,
+                        packet.message, packet.nickname);
+                    this.messageHistory.Add(itemToAdd);
+                }
+                catch(FormatException e)
+                {
+                    nodeGUI.AppendText("An unreadable message was received.");
+                }
+                
             }
         }
 
@@ -415,6 +428,53 @@ namespace udp_p2p_client
             this.ReorderList();
         }
 
+        public void Send(string msg, string ip, int port)
+        {
+            try
+            {
+                // msg = this.nickname + " says: " + msg + '`';
+                byte[] bytes = null;
+                string[] cmd = msg.Split(' ');
+                ChatDataPacket packet = new ChatDataPacket(this.nickname, this.localIP, this.port, msg, DateTime.Now);
+                if (cmd[0] == "/request_history")
+                {
+                    bytes = Encoding.ASCII.GetBytes("/request_history ");
+                    this.client.Send(bytes, bytes.Length, ip, port);
+                }
+
+                /*else
+                {
+                    this.nodeGUI.txtOutput.AppendText(Environment.NewLine + "You said: " + msg);
+                    //msg = nickname + " says: " + msg; //DateTime.Now.ToString() + " " + nickname + " says: " + msg;
+                    //bytes = Encoding.ASCII.GetBytes(packet.nickname + ",")
+                    msg = this.nickname + "`" + this.localIP + "`" + this.port + "`" + msg + "`" + DateTime.Now.ToString();
+                    bytes = Encoding.ASCII.GetBytes(msg);
+                    foreach (RemoteNode rn in this.nodes)
+                    {
+                        if (rn.ip == this.localIP && rn.port == this.port)
+                        {
+                            // do nothing
+                        }
+                        else
+                        {
+                            //IPEndPoint ipAddress = new IPEndPoint(IPAddress.Parse(rn.ip), rn.port);
+                            this.client.Send(bytes, bytes.Length, rn.ip, rn.port);
+
+                        }
+                    }
+                    Tuple<DateTime, string> historyItem = new Tuple<DateTime, string>(DateTime.Now, msg);
+                    this.AddToMessageHistory(packet);
+                    // lstMessageHistory.Add(historyItem);
+                }*/
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+            this.ReorderList();
+        }
+
         public void RequestHistory(string remoteIP, int remotePort)
         {
             byte[] bytes = Encoding.ASCII.GetBytes("/request_history");
@@ -440,9 +500,17 @@ namespace udp_p2p_client
             nodeGUI.ClearText();
             nodeGUI.AppendText("Welcome, " + this.nickname);
             // nodeGUI.AppendText("Deleting chat. Rebuilding from local data..." + Environment.NewLine);
-            foreach (Tuple<DateTime, long, string, string> item in messageHistory)
+            try
             {
-                nodeGUI.AppendText(item.Item4 + " said: " + item.Item3);
+                foreach (Tuple<DateTime, long, string, string> item in messageHistory)
+                {
+                    nodeGUI.AppendText(item.Item4 + " said: " + item.Item3);
+                }
+            }
+            catch(InvalidOperationException ex) 
+            {
+                MessageBox.Show("Please wait.");
+                this.nlistener.Run();
             }
         }
     }

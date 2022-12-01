@@ -40,6 +40,9 @@
             this.tmrPing = new System.Windows.Forms.Timer(this.components);
             this.btnBotSend = new System.Windows.Forms.Button();
             this.timerBot = new System.Windows.Forms.Timer(this.components);
+            this.btnPost = new System.Windows.Forms.Button();
+            this.btnSendMalformedData = new System.Windows.Forms.Button();
+            this.btnRebuildFromNetwork = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtOutput
@@ -133,6 +136,37 @@
             this.timerBot.Interval = 2000;
             this.timerBot.Tick += new System.EventHandler(this.timerBot_Tick);
             // 
+            // btnPost
+            // 
+            this.btnPost.Location = new System.Drawing.Point(154, 489);
+            this.btnPost.Name = "btnPost";
+            this.btnPost.Size = new System.Drawing.Size(146, 33);
+            this.btnPost.TabIndex = 7;
+            this.btnPost.Text = "Send external";
+            this.btnPost.UseVisualStyleBackColor = true;
+            this.btnPost.Click += new System.EventHandler(this.btnPost_Click);
+            // 
+            // btnSendMalformedData
+            // 
+            this.btnSendMalformedData.Location = new System.Drawing.Point(12, 489);
+            this.btnSendMalformedData.Name = "btnSendMalformedData";
+            this.btnSendMalformedData.Size = new System.Drawing.Size(136, 33);
+            this.btnSendMalformedData.TabIndex = 8;
+            this.btnSendMalformedData.Text = "Send Malformed";
+            this.btnSendMalformedData.UseVisualStyleBackColor = true;
+            this.btnSendMalformedData.Click += new System.EventHandler(this.btnSendMalformedData_Click);
+            // 
+            // btnRebuildFromNetwork
+            // 
+            this.btnRebuildFromNetwork.Font = new System.Drawing.Font("Arial", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRebuildFromNetwork.Location = new System.Drawing.Point(306, 489);
+            this.btnRebuildFromNetwork.Name = "btnRebuildFromNetwork";
+            this.btnRebuildFromNetwork.Size = new System.Drawing.Size(124, 33);
+            this.btnRebuildFromNetwork.TabIndex = 9;
+            this.btnRebuildFromNetwork.Text = "Rebuild Chat Data";
+            this.btnRebuildFromNetwork.UseVisualStyleBackColor = true;
+            this.btnRebuildFromNetwork.Click += new System.EventHandler(this.btnRebuildFromNetwork_Click);
+            // 
             // NodeGUI
             // 
             this.AcceptButton = this.btnSend;
@@ -141,7 +175,10 @@
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(744, 491);
+            this.ClientSize = new System.Drawing.Size(744, 534);
+            this.Controls.Add(this.btnRebuildFromNetwork);
+            this.Controls.Add(this.btnSendMalformedData);
+            this.Controls.Add(this.btnPost);
             this.Controls.Add(this.btnBotSend);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnSort);
@@ -174,5 +211,8 @@
         private System.Windows.Forms.Timer tmrPing;
         private System.Windows.Forms.Button btnBotSend;
         private System.Windows.Forms.Timer timerBot;
+        private System.Windows.Forms.Button btnPost;
+        private System.Windows.Forms.Button btnSendMalformedData;
+        private System.Windows.Forms.Button btnRebuildFromNetwork;
     }
 }

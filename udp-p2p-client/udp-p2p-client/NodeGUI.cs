@@ -11,6 +11,9 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 using System.Media;
+using System.Net;
+using System.Runtime.InteropServices;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace udp_p2p_client
 {
@@ -22,16 +25,17 @@ namespace udp_p2p_client
         int remotePort;
         Node node = null;
         bool botStarted = false;
+        string externalString = "Current price of LEGO Star Wars: The Skywalker Saga: ";
         string nickname;
         public bool debug;
+
         string[] botMessages = new string[] {"Beep boop... hello there!", "How's it going?", "Did you see that " +
             "ludicrous display last night?", "This is an automated message.", "CHAT BOT ACTIVE!", "Hi guys!", "Great work y'all!",
             "I just started using this great new Distributed Chat system!", "What's everyone having for dinner?", "Probably gonna have to go soon",
             "I love P2P Messenger", "Craving some pringles right about now", "Played any new games recently?",
-            "Wanna play quake?", "hi wua?", "a/s/l?", "I am from the San Fransisco Bay Area", "I love Shredded Wheat",
-            "Seen the new season of big bang theory?", "Am I a living, thinking creature?", "greetings", "Chatbot Not Destroy",
-            "yummy messages! :)"};
-        public SoundPlayer messageTone = new SoundPlayer(@"..\RoyaltyFreeMessageTone.wav");
+            "Wanna play quake?", "I love Shredded Wheat", "Seen the new season of big bang theory?", 
+            "Am I a living thinking creature?", "greetings", "Chatbot Not Destroy", "yummy messages! :)"};
+        
         Random r = new Random();
         public NodeGUI(string localIP, int localPort, string remoteIP, int remotePort, string nickname, bool debug)
         {
@@ -46,6 +50,7 @@ namespace udp_p2p_client
             node = new Node();
             txtOutput.Text += "Welcome, " + nickname + Environment.NewLine;
             this.Icon = Properties.Resources.p2p;
+            HtmlAgilityPack.HtmlDocument docOld = new HtmlAgilityPack.HtmlDocument();
             node.go(this, port, localIP, remoteIP, remotePort, nickname);
         }
 
@@ -166,6 +171,59 @@ namespace udp_p2p_client
         private void timerBot_Tick(object sender, EventArgs e)
         {
             SendText(true);
+        }
+
+        /*
+         * Note - this uses HtmlAgilityPack, an external library which I
+         * do not take credit for
+         */
+        private void btnPost_Click(object sender, EventArgs e)
+        {
+            string url = "https://store.steampowered.com/app/920210/LEGO_Star_Wars_The_Skywalker_Saga/";
+            var web = new HtmlAgilityPack.HtmlWeb();
+            HtmlAgilityPack.HtmlDocument doc = web.Load(url);
+            ////*[@id="game_area_purchase_section_add_to_cart_296489"]/div[2]/div/div[1]
+            externalString = "hey guys, the current price of the new LEGO Star Wars is " + doc.DocumentNode.SelectNodes("//*[@id=\"game_area_purchase_section_add_to_cart_296489\"]/div[2]/div/div[1]")[0].InnerText;
+
+            node.Send(externalString);
+        }
+
+        private void btnSendMalformedData_Click(object sender, EventArgs e)
+        {
+            node.Send("``h``hy>?????//`/`/`ghfhad");
+        }
+
+        private void btnRebuildFromNetwork_Click(object sender, EventArgs e)
+        {
+            this.ClearText();
+            //bool rebuilt = false;
+            node.messageHistory.Clear();
+            node.Send("/request_history ", node.nodes[node.nodes.Count-1].ip, node.nodes[node.nodes.Count - 1].port);
+            /*int count = 0;
+            while (rebuilt == false)
+            {
+                if (count < node.nodes.Count)
+                {
+                    node.Send("/request_history ", node.nodes[count].ip, node.nodes[count].port);
+                    System.Threading.Thread.Sleep(1000);
+                    if (this.txtOutput.Text != "")
+                    {
+                        rebuilt = true;
+                    }
+                    else
+                    {
+                        count++;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Could not rebuild chat history");
+                    rebuilt = true;
+                }
+                
+            }*/
+
+            //node.Send("/request_history ");
         }
     }
 }
