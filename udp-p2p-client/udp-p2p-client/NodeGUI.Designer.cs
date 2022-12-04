@@ -43,6 +43,8 @@
             this.btnPost = new System.Windows.Forms.Button();
             this.btnSendMalformedData = new System.Windows.Forms.Button();
             this.btnRebuildFromNetwork = new System.Windows.Forms.Button();
+            this.btnSendImage = new System.Windows.Forms.Button();
+            this.btnFindMissingData = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtOutput
@@ -167,6 +169,26 @@
             this.btnRebuildFromNetwork.UseVisualStyleBackColor = true;
             this.btnRebuildFromNetwork.Click += new System.EventHandler(this.btnRebuildFromNetwork_Click);
             // 
+            // btnSendImage
+            // 
+            this.btnSendImage.Location = new System.Drawing.Point(437, 489);
+            this.btnSendImage.Name = "btnSendImage";
+            this.btnSendImage.Size = new System.Drawing.Size(129, 33);
+            this.btnSendImage.TabIndex = 10;
+            this.btnSendImage.Text = "Send Image";
+            this.btnSendImage.UseVisualStyleBackColor = true;
+            this.btnSendImage.Click += new System.EventHandler(this.btnSendImage_Click);
+            // 
+            // btnFindMissingData
+            // 
+            this.btnFindMissingData.Location = new System.Drawing.Point(573, 489);
+            this.btnFindMissingData.Name = "btnFindMissingData";
+            this.btnFindMissingData.Size = new System.Drawing.Size(159, 33);
+            this.btnFindMissingData.TabIndex = 11;
+            this.btnFindMissingData.Text = "Find Missing Data";
+            this.btnFindMissingData.UseVisualStyleBackColor = true;
+            this.btnFindMissingData.Click += new System.EventHandler(this.btnFindMissingData_Click);
+            // 
             // NodeGUI
             // 
             this.AcceptButton = this.btnSend;
@@ -176,6 +198,8 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(744, 534);
+            this.Controls.Add(this.btnFindMissingData);
+            this.Controls.Add(this.btnSendImage);
             this.Controls.Add(this.btnRebuildFromNetwork);
             this.Controls.Add(this.btnSendMalformedData);
             this.Controls.Add(this.btnPost);
@@ -214,5 +238,7 @@
         private System.Windows.Forms.Button btnPost;
         private System.Windows.Forms.Button btnSendMalformedData;
         private System.Windows.Forms.Button btnRebuildFromNetwork;
+        private System.Windows.Forms.Button btnSendImage;
+        private System.Windows.Forms.Button btnFindMissingData;
     }
 }

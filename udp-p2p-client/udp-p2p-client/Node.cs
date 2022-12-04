@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -16,6 +17,7 @@ namespace udp_p2p_client
     internal class Node
     {
         public bool debug = false;
+        public bool broadcast = false;
         public string messageToSend = "";
         string externalString;
         public UdpClient client = null;
@@ -29,6 +31,8 @@ namespace udp_p2p_client
         public string localIP;
         public IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
         ImageConverter ic = new ImageConverter();
+        System.Drawing.Image imageToSend = Properties.Resources.P2P1;
+
         public List<Tuple<DateTime, long, string, string>> messageHistory = new List<Tuple<DateTime, long, string, string>>();
 
         public void go(NodeGUI gui, int port, string localIP, string remoteIP, int remotePort, string nickname)
@@ -43,11 +47,20 @@ namespace udp_p2p_client
             nlistener = new NetworkListener(this);
             RemoteNode initialNode = new RemoteNode(remoteIP, remotePort);
             nodes.Add(initialNode);
-            this.nodeGUI.AddToKnownNodesList(initialNode);
-            Introduce(initialNode.ip, initialNode.port);
+            this.nodeGUI.AddToKnownNodesList(initialNode);   
+            if (broadcast)
+            {
+                client.EnableBroadcast = true;
+                Introduce("255.255.255.255", remotePort);
+            }
+            else
+            {
+                Introduce(initialNode.ip, initialNode.port);
+            }
             //client.Client.ReceiveTimeout = 1000;
-
             nlistener.Start();
+            
+            
         }
 
         public class NetworkListener : AbstractThread
@@ -172,6 +185,11 @@ namespace udp_p2p_client
                             temp = node.messageHistory.Distinct().ToList();
                             node.messageHistory = temp;
                             node.SortMessages();
+                            // node.nodeGUI.AppendText("You're all caught up!");
+                        }
+                        else if (cmd[0] == "/send_image")
+                        {
+                            node.ReceiveImage(Encoding.ASCII.GetBytes(cmd[1]));
                         }
                         else
                         {
@@ -394,7 +412,6 @@ namespace udp_p2p_client
                         this.client.Send(bytes, bytes.Length, rn.ip, rn.port);
                     }
                 }
-
                 else
                 {
                     this.nodeGUI.txtOutput.AppendText(Environment.NewLine + "You said: " + msg);
@@ -494,6 +511,7 @@ namespace udp_p2p_client
             this.client.Send(bytes, bytes.Length, remoteIP, remotePort);
         }
 
+
         public void SortMessages()
         {
             this.messageHistory.Sort();
@@ -509,9 +527,48 @@ namespace udp_p2p_client
             }
             catch(InvalidOperationException ex) 
             {
-                MessageBox.Show("Please wait.");
+                MessageBox.Show("Please wait. Building chat history...");
                 this.nlistener.Run();
             }
+        }
+
+        public void SendImage()
+        {
+            List<RemoteNode> temp_nodes = this.nodes;
+            string msg = "/send_image " + Encoding.ASCII.GetString(imageToByteArray(imageToSend));
+            byte[] bytes = Encoding.ASCII.GetBytes(msg);
+            foreach (RemoteNode rn in temp_nodes)
+            {
+                this.client.Send(bytes, bytes.Length, rn.ip, rn.port);
+            }
+        }
+
+        public void ReceiveImage(byte[] img)
+        {
+            System.Drawing.Image image = byteArrayToImage(img);
+            ImageBox imgBox = new ImageBox();
+            imgBox.SetImage(image);
+            imgBox.Show();
+        }
+
+        /*
+         * Disclaimer:
+         * Credit to https://www.codeproject.com/Articles/15460/C-Image-to-Byte-Array-and-Byte-Array-to-Image-Conv
+         * 
+         * I do not claim the below functions as my own.
+         */
+        public byte[] imageToByteArray(System.Drawing.Image imageIn)
+        {
+            MemoryStream ms = new MemoryStream();
+            imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            return ms.ToArray();
+        }
+
+        public System.Drawing.Image byteArrayToImage(byte[] byteArrayIn)
+        {
+            MemoryStream ms = new MemoryStream(byteArrayIn);
+            System.Drawing.Image returnImage = System.Drawing.Image.FromStream(ms);
+            return returnImage;
         }
     }
 }

@@ -28,6 +28,7 @@ namespace udp_p2p_client
         string externalString = "Current price of LEGO Star Wars: The Skywalker Saga: ";
         string nickname;
         public bool debug;
+        public bool broadcast = false;
 
         string[] botMessages = new string[] {"Beep boop... hello there!", "How's it going?", "Did you see that " +
             "ludicrous display last night?", "This is an automated message.", "CHAT BOT ACTIVE!", "Hi guys!", "Great work y'all!",
@@ -37,7 +38,7 @@ namespace udp_p2p_client
             "Am I a living thinking creature?", "greetings", "Chatbot Not Destroy", "yummy messages! :)"};
         
         Random r = new Random();
-        public NodeGUI(string localIP, int localPort, string remoteIP, int remotePort, string nickname, bool debug)
+        public NodeGUI(string localIP, int localPort, string remoteIP, int remotePort, string nickname, bool debug, bool broadcast)
         {
             InitializeComponent();
 
@@ -51,6 +52,8 @@ namespace udp_p2p_client
             txtOutput.Text += "Welcome, " + nickname + Environment.NewLine;
             this.Icon = Properties.Resources.p2p;
             HtmlAgilityPack.HtmlDocument docOld = new HtmlAgilityPack.HtmlDocument();
+            node.broadcast = broadcast;
+            
             node.go(this, port, localIP, remoteIP, remotePort, nickname);
         }
 
@@ -198,7 +201,8 @@ namespace udp_p2p_client
             this.ClearText();
             //bool rebuilt = false;
             node.messageHistory.Clear();
-            node.Send("/request_history ", node.nodes[node.nodes.Count-1].ip, node.nodes[node.nodes.Count - 1].port);
+            int index = r.Next(node.nodes.Count);
+            node.Send("/request_history ", node.nodes[index].ip, node.nodes[index].port);
             /*int count = 0;
             while (rebuilt == false)
             {
@@ -224,6 +228,27 @@ namespace udp_p2p_client
             }*/
 
             //node.Send("/request_history ");
+        }
+
+        private void btnSendImage_Click(object sender, EventArgs e)
+        {
+            // node.SendImage();
+        }
+
+        private void btnFindMissingData_Click(object sender, EventArgs e)
+        {
+            int count = 0;
+            for (int i = 0; i < node.messageHistory.Count; i++)
+            {
+                if(i%3 == 0)
+                {
+                    node.messageHistory.RemoveAt(i);
+                    count++;
+                }
+            }
+            node.nodeGUI.AppendText("Deleted " + count + " chat items. Now rebuilding...");
+            node.Send("/request_history ", node.nodes[node.nodes.Count - 1].ip, node.nodes[node.nodes.Count - 1].port);
+            node.nodeGUI.AppendText("Deleted " + count + " chat items. Now rebuilding...");
         }
     }
 }

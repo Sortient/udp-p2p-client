@@ -43,6 +43,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.chkDebug = new System.Windows.Forms.CheckBox();
+            this.btnBroadcast = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -182,6 +183,16 @@
             this.chkDebug.Text = "Debug?";
             this.chkDebug.UseVisualStyleBackColor = false;
             // 
+            // btnBroadcast
+            // 
+            this.btnBroadcast.Location = new System.Drawing.Point(164, 561);
+            this.btnBroadcast.Name = "btnBroadcast";
+            this.btnBroadcast.Size = new System.Drawing.Size(212, 37);
+            this.btnBroadcast.TabIndex = 6;
+            this.btnBroadcast.Text = "Broadcast to Subnet";
+            this.btnBroadcast.UseVisualStyleBackColor = true;
+            this.btnBroadcast.Click += new System.EventHandler(this.btnBroadcast_Click);
+            // 
             // LoginGUI
             // 
             this.AcceptButton = this.btnConnect;
@@ -189,6 +200,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(405, 610);
+            this.Controls.Add(this.btnBroadcast);
             this.Controls.Add(this.chkDebug);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.pictureBox1);
@@ -229,5 +241,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox chkDebug;
+        private System.Windows.Forms.Button btnBroadcast;
     }
 }

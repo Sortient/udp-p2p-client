@@ -41,7 +41,27 @@ namespace udp_p2p_client
                 debug = true;
             }
 
-            NodeGUI nodeGUI = new NodeGUI(localIP, localPort, remoteIP, remotePort, nickname, debug);
+            NodeGUI nodeGUI = new NodeGUI(localIP, localPort, remoteIP, remotePort, nickname, debug, false);
+            nodeGUI.Show();
+            this.Hide();
+        }
+
+        private void btnBroadcast_Click(object sender, EventArgs e)
+        {
+            string localIP = txtLocalIPAddress.Text;
+            int localPort = Convert.ToInt32(txtLocalPort.Text);
+            string remoteIP = txtLocalIPAddress.Text;
+            int remotePort = Convert.ToInt32(txtLocalPort.Text);
+            string nickname = txtNickname.Text;
+            bool debug = false;
+
+            if (chkDebug.Checked)
+            {
+                debug = true;
+            }
+            
+            NodeGUI nodeGUI = new NodeGUI(localIP, localPort, remoteIP, remotePort, nickname, debug, true);
+            nodeGUI.broadcast= true;
             nodeGUI.Show();
             this.Hide();
         }

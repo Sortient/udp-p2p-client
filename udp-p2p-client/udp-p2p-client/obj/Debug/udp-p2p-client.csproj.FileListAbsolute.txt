@@ -30,3 +30,4 @@ C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\bin\Debug\Html
 C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\bin\Debug\HtmlAgilityPack.pdb
 C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\bin\Debug\HtmlAgilityPack.xml
 C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp-p2p-client.csproj.CopyComplete
+C:\Users\40227618\Documents\CSC4010\udp-p2p-client\udp-p2p-client\obj\Debug\udp_p2p_client.ImageBox.resources
