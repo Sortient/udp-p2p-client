@@ -103,7 +103,7 @@
             this.btnSort.Name = "btnSort";
             this.btnSort.Size = new System.Drawing.Size(137, 32);
             this.btnSort.TabIndex = 4;
-            this.btnSort.Text = "SORT";
+            this.btnSort.Text = "Rebuild Local";
             this.btnSort.UseVisualStyleBackColor = true;
             this.btnSort.Click += new System.EventHandler(this.btnSort_Click);
             // 
@@ -216,6 +216,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "NodeGUI";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "P2P Messenger";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.NodeGUI_FormClosed);
             this.ResumeLayout(false);

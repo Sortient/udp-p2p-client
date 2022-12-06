@@ -44,6 +44,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.chkDebug = new System.Windows.Forms.CheckBox();
             this.btnBroadcast = new System.Windows.Forms.Button();
+            this.chkApple = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -122,7 +123,7 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
+            this.pictureBox1.BackgroundImage = global::udp_p2p_client.Properties.Resources.avatar_client;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox1.Location = new System.Drawing.Point(109, 75);
             this.pictureBox1.Name = "pictureBox1";
@@ -185,13 +186,25 @@
             // 
             // btnBroadcast
             // 
-            this.btnBroadcast.Location = new System.Drawing.Point(164, 561);
+            this.btnBroadcast.Location = new System.Drawing.Point(175, 561);
             this.btnBroadcast.Name = "btnBroadcast";
-            this.btnBroadcast.Size = new System.Drawing.Size(212, 37);
+            this.btnBroadcast.Size = new System.Drawing.Size(201, 37);
             this.btnBroadcast.TabIndex = 6;
             this.btnBroadcast.Text = "Broadcast to Subnet";
             this.btnBroadcast.UseVisualStyleBackColor = true;
             this.btnBroadcast.Click += new System.EventHandler(this.btnBroadcast_Click);
+            // 
+            // chkApple
+            // 
+            this.chkApple.AutoSize = true;
+            this.chkApple.BackColor = System.Drawing.Color.Transparent;
+            this.chkApple.Location = new System.Drawing.Point(39, 591);
+            this.chkApple.Name = "chkApple";
+            this.chkApple.Size = new System.Drawing.Size(130, 23);
+            this.chkApple.TabIndex = 7;
+            this.chkApple.Text = "MacOS Mode";
+            this.chkApple.UseVisualStyleBackColor = false;
+            this.chkApple.CheckedChanged += new System.EventHandler(this.chkApple_CheckedChanged);
             // 
             // LoginGUI
             // 
@@ -199,7 +212,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(405, 610);
+            this.ClientSize = new System.Drawing.Size(405, 635);
+            this.Controls.Add(this.chkApple);
             this.Controls.Add(this.btnBroadcast);
             this.Controls.Add(this.chkDebug);
             this.Controls.Add(this.btnConnect);
@@ -218,6 +232,7 @@
             this.Font = new System.Drawing.Font("Arial", 10F);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "LoginGUI";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -242,5 +257,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox chkDebug;
         private System.Windows.Forms.Button btnBroadcast;
+        private System.Windows.Forms.CheckBox chkApple;
     }
 }

@@ -16,6 +16,7 @@ namespace udp_p2p_client
 {
     internal class Node
     {
+        public int count = 0;
         public bool debug = false;
         public bool broadcast = false;
         public string messageToSend = "";
@@ -184,6 +185,7 @@ namespace udp_p2p_client
                             List<Tuple<DateTime, long, string, string>> temp = new List<Tuple<DateTime, long, string, string>>();
                             temp = node.messageHistory.Distinct().ToList();
                             node.messageHistory = temp;
+                            node.count++;
                             node.SortMessages();
                             // node.nodeGUI.AppendText("You're all caught up!");
                         }
@@ -406,6 +408,7 @@ namespace udp_p2p_client
                 }
                 else if (cmd[0] == "/request_history")
                 {
+                    count = 0;
                     foreach (RemoteNode rn in this.nodes)
                     {
                         bytes = Encoding.ASCII.GetBytes("/request_history ");
@@ -514,6 +517,9 @@ namespace udp_p2p_client
 
         public void SortMessages()
         {
+            List<Tuple<DateTime, long, string, string>> temp = new List<Tuple<DateTime, long, string, string>>();
+            temp = messageHistory.Distinct().ToList();
+            messageHistory = temp;
             this.messageHistory.Sort();
             nodeGUI.ClearText();
             nodeGUI.AppendText("Welcome, " + this.nickname);

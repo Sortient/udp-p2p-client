@@ -19,6 +19,7 @@ namespace udp_p2p_client
 {
     public partial class NodeGUI : Form
     {
+        int count = 0;
         string localIP;
         int port;
         string remoteIP;
@@ -28,6 +29,7 @@ namespace udp_p2p_client
         string externalString = "Current price of LEGO Star Wars: The Skywalker Saga: ";
         string nickname;
         public bool debug;
+        public bool clientDisabled = false;
         public bool broadcast = false;
 
         string[] botMessages = new string[] {"Beep boop... hello there!", "How's it going?", "Did you see that " +
@@ -202,7 +204,18 @@ namespace udp_p2p_client
             //bool rebuilt = false;
             node.messageHistory.Clear();
             int index = r.Next(node.nodes.Count);
-            node.Send("/request_history ", node.nodes[index].ip, node.nodes[index].port);
+            foreach (RemoteNode rn in node.nodes)
+            {
+                node.Send("/request_history ", rn.ip, rn.port);
+            }
+            //node.SortMessages();
+
+            for (int i = 0; i < node.messageHistory.Count - 1; i+=(node.nodes.Count-1))
+            {
+                node.nodes.RemoveAt(i);
+            }
+
+            node.SortMessages();
             /*int count = 0;
             while (rebuilt == false)
             {
@@ -247,8 +260,32 @@ namespace udp_p2p_client
                 }
             }
             node.nodeGUI.AppendText("Deleted " + count + " chat items. Now rebuilding...");
-            node.Send("/request_history ", node.nodes[node.nodes.Count - 1].ip, node.nodes[node.nodes.Count - 1].port);
-            node.nodeGUI.AppendText("Deleted " + count + " chat items. Now rebuilding...");
+            foreach (RemoteNode rn in node.nodes)
+            {
+                node.Send("/request_history ", rn.ip, rn.port);
+            }
+
+
+            node.SortMessages();
+            //node.Send("/request_history ", node.nodes[node.nodes.Count - 1].ip, node.nodes[node.nodes.Count - 1].port);
+            //node.nodeGUI.AppendText("Deleted " + count + " chat items. Now rebuilding...");
         }
+        /*
+        private void btnPatchyNetwork_Click(object sender, EventArgs e)
+        {
+            if (clientDisabled)
+            {
+                node.go(this, port, localIP, remoteIP, remotePort, nickname);
+                clientDisabled = false;
+                btnPatchyNetwork.BackColor = Color.LightCoral;
+            }
+            else
+            {
+                node.client.Close();
+                clientDisabled = true;
+                btnPatchyNetwork.BackColor = Color.LightGreen;
+            }
+        }
+        */
     }
 }

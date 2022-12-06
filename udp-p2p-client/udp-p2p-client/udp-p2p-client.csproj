@@ -140,5 +140,14 @@
   <ItemGroup>
     <None Include="bin\P2P.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\apple.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\avatar_client.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\clientbg.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
