@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\udp-p2p-client",
+    "\\udp-p2p-client\\udp-p2p-client"
   ],
-  "SelectedNode": "\\C:\\Users\\40227618\\Documents\\CSC4010",
+  "SelectedNode": "\\udp-p2p-client\\udp-p2p-client.sln",
   "PreviewInSolutionExplorer": false
 }

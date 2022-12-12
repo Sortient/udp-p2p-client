@@ -51,7 +51,7 @@ namespace udp_p2p_client
         {
             string localIP = txtLocalIPAddress.Text;
             int localPort = Convert.ToInt32(txtLocalPort.Text);
-            string remoteIP = txtLocalIPAddress.Text;
+            string remoteIP = "192.168.0.255"; //txtLocalIPAddress.Text;
             int remotePort = Convert.ToInt32(txtLocalPort.Text);
             string nickname = txtNickname.Text;
             bool debug = false;

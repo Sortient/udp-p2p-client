@@ -175,7 +175,7 @@
             this.btnSendImage.Name = "btnSendImage";
             this.btnSendImage.Size = new System.Drawing.Size(129, 33);
             this.btnSendImage.TabIndex = 10;
-            this.btnSendImage.Text = "Send Image";
+            this.btnSendImage.Text = "Sort Data";
             this.btnSendImage.UseVisualStyleBackColor = true;
             this.btnSendImage.Click += new System.EventHandler(this.btnSendImage_Click);
             // 

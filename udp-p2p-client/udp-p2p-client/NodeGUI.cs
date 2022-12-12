@@ -33,11 +33,12 @@ namespace udp_p2p_client
         public bool broadcast = false;
 
         string[] botMessages = new string[] {"Beep boop... hello there!", "How's it going?", "Did you see that " +
-            "ludicrous display last night?", "This is an automated message.", "CHAT BOT ACTIVE!", "Hi guys!", "Great work y'all!",
+            "ludicrous display last night?", "This is an automated message.", "CHAT BOT ACTIVE!", "Hi guys!", "What are your thoughts on the pedestrianisation"
+            + " of Norwich city centre?", "Have I got a second series?",
             "I just started using this great new Distributed Chat system!", "What's everyone having for dinner?", "Probably gonna have to go soon",
             "I love P2P Messenger", "Craving some pringles right about now", "Played any new games recently?",
-            "Wanna play quake?", "I love Shredded Wheat", "Seen the new season of big bang theory?", 
-            "Am I a living thinking creature?", "greetings", "Chatbot Not Destroy", "yummy messages! :)"};
+            "Wanna play quake?",  "The thing about Arsenal is they always try and walk it in",
+            "Am I a living thinking creature?", "greetings", "What was Wenger thinking sending Walcott on that early?"};
         
         Random r = new Random();
         public NodeGUI(string localIP, int localPort, string remoteIP, int remotePort, string nickname, bool debug, bool broadcast)
@@ -246,6 +247,7 @@ namespace udp_p2p_client
         private void btnSendImage_Click(object sender, EventArgs e)
         {
             // node.SendImage();
+            node.SortMessages();
         }
 
         private void btnFindMissingData_Click(object sender, EventArgs e)
