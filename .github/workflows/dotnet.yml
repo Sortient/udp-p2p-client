@@ -19,6 +19,7 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
+      working-directory: udp-p2p-client
       run: dotnet restore
     - name: Build
       working-directory: udp-p2p-client
